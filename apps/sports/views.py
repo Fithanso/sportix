@@ -1,6 +1,9 @@
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import viewsets, permissions
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from apps.sports import models as sports_models
 from apps.sports import serializers as sports_serializers
@@ -49,6 +52,13 @@ from apps.sports import filters as sports_filters
         operation_id='exercise_destroy'
     )
 )
+@method_decorator(
+    name='single_detailed',
+    decorator=swagger_auto_schema(
+        operation_summary='Получение подробного объекта упражнения',
+        operation_id='exercise_detailed_retrieve'
+    )
+)
 class ExerciseViewSet(viewsets.ModelViewSet):
     """
     CRUD для модели Exercise
@@ -56,14 +66,16 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     model = sports_models.Exercise
     queryset = sports_models.Exercise.objects.all()
+    serializer_class = sports_serializers.ExerciseSerializer
     filterset_class = sports_filters.ExerciseFilter
     lookup_field = 'id'
     ordering = ['-id']
 
-    def get_serializer_class(self):
-        if self.action in ['list', 'retrieve']:
-            return sports_serializers.VerboseExerciseSerializer
-        return sports_serializers.ExerciseSerializer
+    @action(detail=True, url_path='detailed')
+    def single_detailed(self, request, id):
+        instance = self.get_object()
+        serializer = sports_serializers.VerboseExerciseSerializer(instance)
+        return Response(serializer.data)
 
 
 @method_decorator(
