@@ -19,7 +19,6 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_DIR = Path(BASE_DIR).resolve().parent
 
 dotenv_path = join(BASE_DIR, '.env')
 load_dotenv(dotenv_path)
@@ -31,7 +30,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
@@ -143,10 +142,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = str(PROJECT_DIR / 'static_content/static/')
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = str(PROJECT_DIR / 'static_content/media/')
+STATIC_ROOT = str(BASE_DIR / 'static_content/')
+STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = str(BASE_DIR / 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
