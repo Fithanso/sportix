@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Custom applications
+    'apps.base',
     'apps.accounts',
     'apps.sports'
 ]
