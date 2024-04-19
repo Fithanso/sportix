@@ -45,6 +45,6 @@ python manage.py loaddata accounts.json sports.json
 8. Create symlink for ```sportix/conf/sportix.uwsgi.conf``` into ```/etc/supervisor/conf.d```.  
 9. Run ```sudo systemctl start supervisor``` (or ```sudo systemctl restart supervisor```). Check that process "sportix_uwsgi" is running by ```sudo supervisorctl status```.  
 10. Start NGINX. Website should work on http://127.0.0.1:8000.  
-11. When using API, you will need JWT access token. Obtain it on ```/api/v1/accounts/auth/token/``` and use with 'Authorization' header with value
+11. When testing API manually, you will need JWT access token. Obtain it on ```/api/v1/accounts/auth/token/``` and use with 'Authorization' header with value
 ```Bearer {token_value}```
 
